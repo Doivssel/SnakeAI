@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.special import expit
 
 class Snake(object):
     
@@ -22,7 +23,6 @@ class Snake(object):
         self.lost=False
         self.body=np.array([[self.posX,self.posY]])
         self.tail=self.body[0]
-        self.border=[map.number_col-self.posX,map.number_row-self.posY]
         map.map[self.posY,self.posX]=1
         map.add_apple()
 
@@ -134,7 +134,7 @@ class Genetic_Network(object):
         self.weight=[[np.random.uniform(low=-1,high=1,size=(size[i+1],size[i])) for i in range(self.number_layer-1)] for _ in range(population_size)] 
         
     def sigmoid(self,z):
-        return(1/(1+np.exp(-z)))
+        return(1/(1+expit(-z)))
     
     def tanh(self,z):
         return(2*self.sigmoid(z)-1)
@@ -264,8 +264,8 @@ class Genetic_Network(object):
         parametes:
         
         numb_ind: """
-        childs=[]
         parents=self.selection_best(score,num_ind)
+        childs=[self.weight[i] for i in parents]
         for _ in range(int(self.population_size/2)):
             rdm_num=np.random.choice(parents,size=2,replace=False)
             parent1,parent2=self.weight[rdm_num[0]],self.weight[rdm_num[1]]
@@ -282,8 +282,9 @@ class Genetic_Network(object):
     def train(self,epoch,score,numb_ind,n_c,p,mu=0,sigma=1):
         for _ in range(epoch):
             score_tot=self.score_total(score)
-            print(score_tot)
-            print(np.mean(score_tot))
+            print("epoch: ",_, 
+                  ", mean fitness: ",np.mean(score_tot),
+                  "max fitness: ", np.max(score_tot))
             self.children(score,numb_ind,n_c,p,mu,sigma)
 
     def get_best(self,score):
@@ -300,13 +301,11 @@ def score(weight):
                         #Distance to the wall in the cross direction centerd around the head
                         [snake.posX],
                         [snake.posY],
-                        [snake.border[0]],
-                        [snake.border[1]],
-                        #Apple in the cross direction centerd around the head
-                        [(map.rdm_pos[0]==snake.posX and map.rdm_pos[1]>0 )*1],
-                        [(map.rdm_pos[0]==snake.posX and map.rdm_pos[1]<0 )*1],
-                        [(map.rdm_pos[1]==snake.posX and map.rdm_pos[0]>0 )*1],
-                        [(map.rdm_pos[1]==snake.posX and map.rdm_pos[0]<0 )*1],
+                        [map.number_col-snake.posX],
+                        [map.number_row-snake.posY],
+                        #Distance head apple
+                        [np.abs(snake.posX-map.rdm_pos[0])],
+                        [np.abs(snake.posY-map.rdm_pos[1])],
                         #These are for the current direction 
                         [(snake.direction_lr<0)*1],
                         [(snake.direction_lr>0)*1],
@@ -326,11 +325,22 @@ def score(weight):
         elif(dir=="u" and snake.direction_ud==0):
             snake.direction_ud=1
             snake.direction_lr=0
-    return(snake.score+snake.time)
+    return(snake.time+4*snake.score)
+    #return(snake.time+(2**snake.score+snake.score**(2.1)*500)-(snake.score**(1.2)*(0.25*snake.time)**(1.3)))
 
 
-net=Genetic_Network([14,16,16,4],["reLu","reLu","sigmoid"],200)
+net=Genetic_Network([12,20,20,4],["reLu","reLu","sigmoid"],200)
 
-net.train(epoch=200,score=score,numb_ind=50,n_c=100,p=0.05,mu=0,sigma=1)
+net.train(epoch=1500,score=score,numb_ind=50,n_c=50,p=0.05,mu=0,sigma=1)
 
 net.get_best(score)
+
+# [(map.rdm_pos[0]==snake.posX and map.rdm_pos[1]>0 )*1],
+# [(map.rdm_pos[0]==snake.posX and map.rdm_pos[1]<0 )*1],
+# [(map.rdm_pos[1]==snake.posX and map.rdm_pos[0]>0 )*1],
+# [(map.rdm_pos[1]==snake.posX and map.rdm_pos[0]<0 )*1],
+
+# [(snake.posX<1)*1],
+# [(snake.posY<1)*1],
+# [(map.number_col-snake.posX>9)*1],
+# [(map.number_row-snake.posY>9)*1],
