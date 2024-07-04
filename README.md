@@ -1,3 +1,5 @@
+# Artificial snake
+
 The goal of this project is to train a neural network to perform well on the snake game using genetic algorithm. Renforcement 
 training is particularly intersting on such a game mainly because it is easy to select the next generation by using the 
 survival time of the snake or the number of apple that it has eaten.
