@@ -12,6 +12,12 @@ The snake game, is more or less the same one that I've coded before. I've only m
 mouvement. Before it was controled by the key pressed now it is controled by the four neurons of the output layer
 of a neural network. Some things have also been added, mainly to use them as data for the input layer of the neural net.
 
+Here is a description of the input data.
+
+1. p
+2. p
+3. 
+
 I've divided the snake game into two algorithm one used for training with no visual output. The other with visual output, to visualise how
 the neural net obtained by training behave.
 
@@ -19,6 +25,7 @@ Here is a quick explanation of the hyparemeters of the snake game.
 
 1. **map_size**
 2. **speed**
+
 
 
 ## Neural network
