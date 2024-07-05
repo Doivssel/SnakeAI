@@ -18,6 +18,9 @@ Here is a description of the input data.
 2. p
 3. 
 
+If you want to update/change the data, you must update it not only in the score function but also in the playing function of the snakeAI_visual file.
+
+
 I've divided the snake game into two algorithm one used for training with no visual output. The other with visual output, to visualise how
 the neural net obtained by training behave.
 
