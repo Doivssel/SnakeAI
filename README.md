@@ -1,10 +1,12 @@
 # Artificial snake
 
-The goal of this project is to train a neural network to perform well on the snake game using genetic algorithm. Renforcement 
-training is particularly intersting on such a game mainly because it is easy to select the next generation by using the 
-survival time of the snake or the number of apple that it has eaten.
-
-
+The goal of this project is to train a neural network so that the neural network begin to show intelligent behavior on the snake game. This 
+will be done by using genetic algorithm as renforcement  training is particularly intersting on such a game mainly because it is easy to select the next generation by using the 
+survival time of the snake or the number of apple that it has eaten. Well it is important to note here that I won't delve too deep in solving the snake
+as it take too much time. Indeed there are too many configuration of hyperparameters, input data and fitness functions to test. What I truly want to do
+is to show that intelligent behavior may emerge from a simple neural network using genetic algorithm. I've put some gif, as examples of some intelligent behavior.
+These results were obtained by using a fitness function that take into the consideration the apple and the survival time. As you see the snake use differents strategies as a compromise
+between the two. But if you want to try to solve the snake using this code feel free to try it, hopefully this is doable. I give a description of what've done underneath.
 
 ## Snake game
 
@@ -12,24 +14,18 @@ The snake game, is more or less the same one that I've coded before. I've only m
 mouvement. Before it was controled by the key pressed now it is controled by the four neurons of the output layer
 of a neural network. Some things have also been added, mainly to use them as data for the input layer of the neural net.
 
-Here is a description of the input data.
-
-1. p
-2. p
-3. 
-
 If you want to update/change the data, you must update it not only in the score function but also in the playing function of the snakeAI_visual file.
 
+I've divided the snake game into two version one used for training with no visual output (snakeAI_training). The other with visual output, to visualise how
+the neural net obtained by training behave(SnakeAI_visual). Then there is global version (SnakeAI) that train a neural nets on the training version then show
+the result using the visual version.
 
-I've divided the snake game into two algorithm one used for training with no visual output. The other with visual output, to visualise how
-the neural net obtained by training behave.
+Here is a quick explanation of the hyparemeters of the Game class of the SnakeAI,
 
-Here is a quick explanation of the hyparemeters of the snake game.
-
-1. **map_size**
-2. **speed**
-
-
+1. **root**: tk.Tk() instance
+2. **map_dim**: int dimension of the map (map_dim x map_dim)
+3. **speed**: int time before the snake make it's next move in ms
+4. **net**: Network instance
 
 ## Neural network
 
@@ -39,8 +35,9 @@ a similar way to the weight. But this was too costly for my computer.
 
 Here is a quick explanation of the hyparemeters of the neural network.
 
-1. **size**
-2. **function**
+1. **size**: list of the neurons per layer
+3. **function**: list of the activation functions
+4. **weight**: list of array representing the weights of a neural net
 
 ## Genetic algorithm
 
@@ -62,15 +59,16 @@ The idea behind genetic algorithm is simple, just make a bad copy of how evoluti
 
 ## Hyperparameters
 
-1. **size_population**:
-2. **score**:
-3. **num_ind**:
-4. **p**:
-5. **$\mu$**:
-6. **$\sigma$**:
-7. **epoch**:
+1. **size_population**: int representing how many individual there in the population
+2. **score**: function measuring the fitness of an individual
+3. **num_ind**:  int number individual that will represent the parents pool and be kept for the next generation
+5. **p**: float probability of a mutation 
+6. **$\mu$**: float parameters of a normal distribution used to mutate weights
+7. **$\sigma$**: float parameters of a normal distribution used to mutate weights
+8. **epoch**: int number of generation
+
+For more details directly look at the code, I've commented it.
 
 Due to the important number of hyperparameters it may a good learning configuration. Moreover the choice of the score function is extremely important and it is difficult to set a good 
-one. For example if the score function only involve the survival time of the snake. The snake will end up making endless rotation, the simplest solution to maximising it's survival time. But simply having a score function dependant on the number of apple eaten doesn't work either has it present a big leap in behavior. The evolution must happen incrementaly (it could work in fact in one big leap but that would be a huge stroke of luck).The input data is also of extreme importance different data may lead to differents behavior. All in all setting a good training environnement is particularly difficult and take a lot 
-of time.
+one. For example if the score function only involve the survival time of the snake. The snake will end up making endless rotation, the simplest solution to maximising it's survival time. But simply having a score function dependant on the number of apple eaten doesn't work either has it present a big leap in behavior. The evolution must happen incrementaly (it could work in fact in one big leap but that would be a huge stroke of luck).The input data is also of extreme importance different data may lead to differents behavior. All in all setting a good training environnement is particularly difficult and take a lot of time.
 <
