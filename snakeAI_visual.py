@@ -255,14 +255,15 @@ class Game(object):
                       [self.snake.posY],
                       [self.map.number_col-self.snake.posX],
                       [self.map.number_row-self.snake.posY],
-                      #Apple in the cross direction centerd around the head
-                      [(self.map.rdm_pos[0]>self.snake.posX)*1],
-                      [(self.map.rdm_pos[0]<self.snake.posX)*1],
-                      [(self.map.rdm_pos[1]>self.snake.posY)*1],
-                      [(self.map.rdm_pos[1]<self.snake.posY)*1],
+                      #Apple in the cross direction centerd around the head or distance
+
+                        #   [(self.map.rdm_pos[0]>self.snake.posX)*1],
+                        #   [(self.map.rdm_pos[0]<self.snake.posX)*1],
+                        #   [(self.map.rdm_pos[1]>self.snake.posY)*1],
+                        #   [(self.map.rdm_pos[1]<self.snake.posY)*1],
   
-                      # [np.abs(snake.posX-map.rdm_pos[0])],
-                      # [np.abs(snake.posY-map.rdm_pos[1])],
+                      [np.abs(self.snake.posX-self.map.rdm_pos[0])],
+                      [np.abs(self.snake.posY-self.map.rdm_pos[1])],
                       #These are for the current direction 
                       [(self.snake.direction_lr<0)*1],
                       [(self.snake.direction_lr>0)*1],
@@ -270,16 +271,16 @@ class Game(object):
                       [(self.snake.direction_ud>1)*1]])
       output=self.net.feedforward(data)[-1]
       dir=np.argmax(output)
-      if(dir==0 and self.snake.direction_lr==0):
+      if(dir==3 and self.snake.direction_lr==0):
           self.snake.direction_lr=1
           self.snake.direction_ud=0
-      elif(dir==1 and self.snake.direction_lr==0):
+      elif(dir==2 and self.snake.direction_lr==0):
           self.snake.direction_lr=-1
           self.snake.direction_ud=0
-      elif(dir==2 and self.snake.direction_ud==0):
+      elif(dir==1 and self.snake.direction_ud==0):
           self.snake.direction_ud=-1
           self.snake.direction_lr=0
-      elif(dir==3 and self.snake.direction_ud==0):
+      elif(dir==0 and self.snake.direction_ud==0):
           self.snake.direction_ud=1
           self.snake.direction_lr=0
       self.root.after(100,self.playing)
