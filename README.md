@@ -69,6 +69,6 @@ The idea behind genetic algorithm is simple, just make a bad copy of how evoluti
 
 For more details directly look at the code, I've commented it.
 
-Due to the important number of hyperparameters it may a good learning configuration. Moreover the choice of the score function is extremely important and it is difficult to set a good 
+Due to the important number of hyperparameters it may be difficult to get a good learning configuration. Moreover the choice of the score function is extremely important and it is difficult to set a good 
 one. For example if the score function only involve the survival time of the snake. The snake will end up making endless rotation, the simplest solution to maximising it's survival time. But simply having a score function dependant on the number of apple eaten doesn't work either has it present a big leap in behavior. The evolution must happen incrementaly (it could work in fact in one big leap but that would be a huge stroke of luck).The input data is also of extreme importance different data may lead to differents behavior. All in all setting a good training environnement is particularly difficult and take a lot of time.
 <
